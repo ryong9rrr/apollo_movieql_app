@@ -43,8 +43,17 @@ const Loading = styled.div`
   margin-top: 10px;
 `;
 
+const Movies = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 25px;
+  width: 60%;
+  position: relative;
+  top: -50px;
+`;
+
 export default () => {
-  const { loading, error, data } = useQuery(GET_MOVIES);
+  const { loading, data } = useQuery(GET_MOVIES);
   return (
     <Container>
       <Header>
@@ -52,10 +61,13 @@ export default () => {
         <Subtitle>graphQL practice</Subtitle>
       </Header>
       {loading && <Loading>Loading...</Loading>}
-      {error && <Loading>Error...</Loading>}
-      {!loading &&
-        data.movies &&
-        data.movies.map((m) => <Movie key={m.id} id={m.id} />)}
+      {!loading && data && (
+        <Movies>
+          {data.movies.map((m) => (
+            <Movie key={m.id} id={m.id} bg={m.medium_cover_image} />
+          ))}
+        </Movies>
+      )}
     </Container>
   );
 };
